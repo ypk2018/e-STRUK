@@ -1,0 +1,471 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #eef2f5;
+  }
+}
+
+/* Header Aplikasi POS */
+.app-header {
+  background-color: #0078d4;
+  color: white;
+  padding: 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+.app-header h2 {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 600;
+}
+.header-icons {
+  font-size: 18px;
+  display: flex;
+  gap: 18px;
+  cursor: pointer;
+}
+
+/* Outer Layout */
+.pos-main-container {
+  display: flex;
+  flex: 1;
+  padding: 20px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* Form POS Input */
+.pos-card {
+  background: white;
+  border-radius: 6px;
+  padding: 25px;
+  flex: 1;
+  min-width: 380px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+}
+.pos-form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.pos-form-group label {
+  width: 160px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+.pos-form-group .colon {
+  width: 24px;
+  text-align: center;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+.pos-form-group input,
+.pos-form-group select {
+  flex: 1;
+  padding: 9px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+}
+.pos-form-group input:focus,
+.pos-form-group select:focus {
+  border-color: #0078d4;
+}
+
+/* Selector Kategori */
+.category-selector {
+  display: flex;
+  gap: 12px;
+}
+.cat-btn {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  background: #fafafa;
+  transition: all 0.2s;
+  min-width: 90px;
+}
+.cat-btn.active {
+  border-color: #0078d4;
+  background-color: #e6f0fa;
+  color: #0078d4;
+  font-weight: bold;
+}
+.cat-btn svg {
+  width: 28px;
+  height: 28px;
+  fill: currentColor;
+  margin-bottom: 4px;
+}
+
+.btn-print {
+  background-color: #0078d4;
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  font-size: 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: auto;
+  align-self: flex-end;
+  transition: background-color 0.2s;
+}
+.btn-print:hover {
+  background-color: #005a9e;
+}
+
+/* Preview Struk Kertas Thermal */
+.preview-area {
+  background: #dcdfe3;
+  border-radius: 6px;
+  padding: 20px;
+  width: 560px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow-x: auto;
+}
+.thermal-paper {
+  background: white;
+  width: 500px;
+  padding: 15px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 10.5px;
+  color: #000;
+  line-height: 1.25;
+  box-sizing: border-box;
+}
+
+/* Garis Bingkai Cetak Struk (Frame Border) */
+.receipt-framed-solid {
+  border: 1.5px solid #000 !important;
+}
+.receipt-framed-dashed {
+  border: 1.5px dashed #000 !important;
+}
+.receipt-framed-double {
+  border: 3.5px double #000 !important;
+}
+
+/* Layout Duplikat 2 Kolom */
+.dual-receipt {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.col-left {
+  width: 42%;
+  border-right: 1px dashed #ccc;
+  padding-right: 10px;
+}
+.col-right {
+  width: 56%;
+}
+
+.center {
+  text-align: center;
+}
+.bold {
+  font-weight: bold;
+}
+.flex-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Format Baris Struk dengan Titik Dua Rata Tengah */
+.receipt-row {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 2px;
+  line-height: 1.3;
+}
+.col-left .receipt-row .r-label {
+  width: 78px;
+  flex-shrink: 0;
+}
+.col-right .receipt-row .r-label {
+  width: 104px;
+  flex-shrink: 0;
+}
+.receipt-row .r-colon {
+  width: 14px;
+  text-align: center;
+  flex-shrink: 0;
+  font-weight: bold;
+}
+.receipt-row .r-value {
+  flex: 1;
+  word-break: break-word;
+}
+
+/* Stempel JAYA MART SENTANI */
+.stempel-oval {
+  border: 2px solid #000;
+  border-radius: 50%;
+  width: 100px;
+  height: 50px;
+  margin: 8px auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 8px;
+  font-weight: bold;
+  transform: rotate(-4deg);
+  text-align: center;
+  line-height: 1;
+}
+
+/* Kotak Oval Token PLN */
+.token-box {
+  border: 1.5px solid #000;
+  border-radius: 20px;
+  padding: 5px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: bold;
+  margin: 8px 0;
+  letter-spacing: 0.5px;
+}
+
+/* Struk Listrik Model BRI (Kertas Roll Thermal EDC) Sesuai Gambar Struk Listrik.jpg */
+.bri-paper {
+  background: #ffffff;
+  width: 340px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.18);
+  font-family: 'Courier New', Courier, monospace;
+  color: #111;
+  display: flex;
+  position: relative;
+  border-radius: 2px;
+  box-sizing: border-box;
+}
+.bri-ribbon {
+  width: 24px;
+  border-right: 1px dashed #b0c4de;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 2px;
+  color: #00529c;
+  background: #fbfdff;
+  user-select: none;
+  overflow: hidden;
+}
+.bri-ribbon-text {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: #0070ba;
+  margin: 6px 0;
+}
+.bri-content {
+  flex: 1;
+  padding: 12px 14px 16px 12px;
+  font-size: 10.8px;
+  line-height: 1.28;
+}
+.bri-title {
+  text-align: center;
+  font-weight: 700;
+  font-size: 11.5px;
+}
+.bri-subtitle {
+  text-align: center;
+  font-size: 10.5px;
+  margin-bottom: 3px;
+}
+.bri-row {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 2px;
+  line-height: 1.26;
+}
+.bri-row .b-label {
+  width: 96px;
+  flex-shrink: 0;
+}
+.bri-row .b-colon {
+  width: 14px;
+  text-align: center;
+  flex-shrink: 0;
+  font-weight: bold;
+}
+.bri-row .b-value {
+  flex: 1;
+  word-break: break-word;
+}
+.bri-token-container {
+  text-align: center;
+  margin: 10px 0 8px 0;
+}
+.bri-token-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  margin-bottom: 4px;
+}
+.bri-token-large {
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.22;
+  letter-spacing: 0.5px;
+  color: #000;
+}
+.bri-footer {
+  text-align: center;
+  font-size: 10px;
+  line-height: 1.35;
+  margin-top: 10px;
+  color: #222;
+}
+
+/* Struk Pembayaran Telkom / IndiHome Agen BRILink Jaya Mart (Sesuai Foto Baru) */
+.brilink-paper {
+  background: #ffffff;
+  width: 330px;
+  padding: 16px 18px 22px 18px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.18);
+  font-family: 'Courier New', Courier, monospace;
+  color: #111;
+  font-size: 11px;
+  line-height: 1.3;
+  border-radius: 2px;
+  box-sizing: border-box;
+}
+.brilink-logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.brilink-header-text {
+  text-align: center;
+  font-size: 10.5px;
+  line-height: 1.25;
+  margin-bottom: 12px;
+}
+.brilink-row {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 2px;
+  line-height: 1.28;
+}
+.brilink-row .bl-label {
+  width: 102px;
+  flex-shrink: 0;
+}
+.brilink-row .bl-colon {
+  width: 14px;
+  text-align: center;
+  flex-shrink: 0;
+  font-weight: bold;
+}
+.brilink-row .bl-value {
+  flex: 1;
+  word-break: break-word;
+}
+.brilink-footer {
+  text-align: center;
+  font-size: 10px;
+  line-height: 1.35;
+  margin-top: 14px;
+  color: #222;
+}
+
+/* Media Print */
+@media print {
+  @page {
+    margin: 0;
+  }
+  body {
+    background: white !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .app-header,
+  .pos-card,
+  .history-section,
+  .no-print,
+  footer {
+    display: none !important;
+  }
+  .pos-main-container {
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+    width: 100% !important;
+  }
+  .preview-area {
+    background: white !important;
+    padding: 2mm !important;
+    width: 100% !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    display: flex !important;
+    justify-content: center !important;
+  }
+  .thermal-paper,
+  .bri-paper,
+  .brilink-paper {
+    box-shadow: none !important;
+    box-sizing: border-box !important;
+    margin: 2mm auto !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Khusus Struk Roll / Kasir Single (BRILink & BRI PLN) */
+  .brilink-paper {
+    width: 100% !important;
+    max-width: 76mm !important;
+    padding: 3.5mm 4mm !important;
+  }
+  .bri-paper {
+    width: 100% !important;
+    max-width: 76mm !important;
+  }
+  .bri-paper .bri-content {
+    padding: 3mm 3.5mm !important;
+  }
+
+  /* Khusus Struk Dual 2 Kolom (Bank Muamalat) */
+  .thermal-paper {
+    width: 100% !important;
+    max-width: 180mm !important;
+    padding: 4mm 5mm !important;
+  }
+
+  /* Garis Bingkai saat Cetak / Print */
+  .receipt-framed-solid {
+    border: 1.5px solid #000 !important;
+  }
+  .receipt-framed-dashed {
+    border: 1.5px dashed #000 !important;
+  }
+  .receipt-framed-double {
+    border: 3.5px double #000 !important;
+  }
+}
+

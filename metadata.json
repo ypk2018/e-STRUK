@@ -1,0 +1,8 @@
+{
+  "name": "Aplikasi Cetak Struk - LISTRIK & INDIHOME",
+  "description": "Aplikasi POS dan cetak struk kasir thermal untuk pembayaran Listrik PLN Prabayar (Model Roll BRI EDC & Dual Bank Muamalat), Internet IndiHome, dan tagihan lainnya dengan simulasi stempel kasir.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
