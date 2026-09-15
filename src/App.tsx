@@ -117,12 +117,8 @@ export default function App() {
   };
 
   const handlePrint = () => {
-    const updatedData = {
-      ...receiptData,
-      tanggalWaktu: getCurrentFormattedDateTime(),
-    };
-    setReceiptData(updatedData);
-    saveToHistory(updatedData);
+    // Tanggal pembelian token & transaksi diisi manual oleh pengguna, pertahankan nilai input
+    saveToHistory(receiptData);
     showToast('Membuka dialog printer thermal...');
     setTimeout(() => {
       window.print();
@@ -135,12 +131,14 @@ export default function App() {
   };
 
   const handleResetForm = () => {
+    const isBri = receiptData.template === 'bri_edc';
     const resetData: ReceiptData = {
       ...INITIAL_RECEIPT_DATA,
+      template: receiptData.template,
       id: 'RCP-' + Date.now(),
       tokenStroom: generateToken(),
       noReff: generateReff(),
-      tanggalWaktu: getCurrentFormattedDateTime(),
+      tanggalWaktu: isBri ? '20/08/2026 07:07:50 (CU)' : getCurrentFormattedDateTime(),
     };
     setReceiptData(resetData);
     showToast('Formulir kasir telah di-reset');
@@ -149,7 +147,8 @@ export default function App() {
   const handleLoadRecord = (recordDetails: ReceiptData) => {
     setReceiptData({
       ...recordDetails,
-      tanggalWaktu: getCurrentFormattedDateTime(), // Refresh time on load
+      // Pertahankan tanggal pembelian token / transaksi asli yang tersimpan di riwayat
+      tanggalWaktu: recordDetails.tanggalWaktu || getCurrentFormattedDateTime(),
     });
     showToast(`Data ${recordDetails.namaPelanggan} berhasil dimuat ke formulir`);
     window.scrollTo({ top: 0, behavior: 'smooth' });

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { Calendar, Clock } from 'lucide-react';
 import { ReceiptData } from '../types';
 import {
   generateToken,
@@ -22,6 +23,7 @@ export const ReceiptForm: React.FC<ReceiptFormProps> = ({
   onSubmit,
   onReset,
 }) => {
+  const datePickerRef = useRef<HTMLInputElement>(null);
   const isBriPln = data.template === 'bri_edc';
   const isBrilinkTelkom = data.template === 'brilink_telkom';
   const isPln = data.type === 'elektrik';
@@ -77,6 +79,121 @@ export const ReceiptForm: React.FC<ReceiptFormProps> = ({
       tanggalWaktu: isBriPln ? `${timeStr} (CU)` : timeStr,
     });
   };
+
+  const handleDatePickerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    if (!val) return;
+    const [dPart, tPart] = val.split('T');
+    if (!dPart) return;
+    const [y, m, d] = dPart.split('-');
+    const [hh, mm] = (tPart || '00:00').split(':');
+
+    if (isBriPln) {
+      onChange({
+        ...data,
+        tanggalWaktu: `${d}/${m}/${y} ${hh}:${mm}:00 (CU)`,
+      });
+    } else {
+      onChange({
+        ...data,
+        tanggalWaktu: `${d}-${m}-${y} ${hh}:${mm}:00`,
+      });
+    }
+  };
+
+  const handleToggleCuSuffix = () => {
+    const current = data.tanggalWaktu || '';
+    if (current.includes('(CU)')) {
+      onChange({ ...data, tanggalWaktu: current.replace(/\s*\(CU\)/g, '').trim() });
+    } else {
+      onChange({ ...data, tanggalWaktu: `${current.trim()} (CU)` });
+    }
+  };
+
+  const renderManualDateField = (isToken: boolean) => (
+    <div className="pos-form-group bg-amber-50/50 p-2 rounded border border-amber-200/80 mb-2">
+      <div className="flex flex-col">
+        <label className="text-slate-800 font-semibold flex items-center gap-1.5">
+          <span>{isToken ? 'Tgl Pembelian Token' : 'Tanggal Transaksi'}</span>
+          <span className="text-[10px] px-1.5 py-0.2 bg-amber-100 text-amber-800 border border-amber-300 rounded font-medium">
+            Manual
+          </span>
+        </label>
+        <span className="text-[10px] text-slate-500 font-normal">
+          {isBriPln ? 'Format: DD/MM/YYYY HH:mm:ss (CU)' : 'Format: DD-MM-YYYY HH:mm:ss'}
+        </span>
+      </div>
+      <span className="colon">:</span>
+      <div className="flex-1">
+        <div className="flex gap-1.5 items-center">
+          <input
+            type="text"
+            id="tglBayar"
+            className="w-full font-mono text-xs bg-white"
+            value={data.tanggalWaktu || ''}
+            onChange={(e) => onChange({ ...data, tanggalWaktu: e.target.value })}
+            placeholder={isBriPln ? '20/08/2026 07:07:50 (CU)' : '25-04-2026 19:58:50'}
+          />
+
+          <input
+            type="datetime-local"
+            ref={datePickerRef}
+            onChange={handleDatePickerChange}
+            className="sr-only"
+            tabIndex={-1}
+            aria-hidden="true"
+          />
+
+          <button
+            type="button"
+            onClick={() => {
+              if (datePickerRef.current) {
+                if (typeof datePickerRef.current.showPicker === 'function') {
+                  datePickerRef.current.showPicker();
+                } else {
+                  datePickerRef.current.focus();
+                  datePickerRef.current.click();
+                }
+              }
+            }}
+            title="Pilih tanggal & jam dari kalender"
+            className="px-2 py-1 text-xs bg-white hover:bg-slate-100 border border-slate-300 rounded cursor-pointer text-slate-700 whitespace-nowrap flex items-center gap-1 shadow-2xs font-medium"
+          >
+            <Calendar className="w-3.5 h-3.5 text-slate-600" />
+            <span className="hidden sm:inline">Pilih</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={handleSetCurrentTime}
+            title="Set ke waktu sekarang"
+            className="px-2 py-1 text-xs bg-white hover:bg-slate-100 border border-slate-300 rounded cursor-pointer text-slate-700 whitespace-nowrap flex items-center gap-1 shadow-2xs font-medium"
+          >
+            <Clock className="w-3.5 h-3.5 text-slate-600" />
+            <span className="hidden sm:inline">Sekarang</span>
+          </button>
+
+          {isBriPln && (
+            <button
+              type="button"
+              onClick={handleToggleCuSuffix}
+              title="Tambah / Hapus kode terminal (CU)"
+              className={`px-1.5 py-1 text-xs rounded border cursor-pointer font-mono font-bold transition-colors ${
+                (data.tanggalWaktu || '').includes('(CU)')
+                  ? 'bg-blue-600 text-white border-blue-600 shadow-2xs'
+                  : 'bg-white text-slate-600 border-slate-300 hover:bg-slate-50'
+              }`}
+            >
+              (CU)
+            </button>
+          )}
+        </div>
+        <div className="text-[10px] text-amber-800/90 mt-1 flex items-center gap-1">
+          <span>✍️ Tanggal pembelian token diisi manual (tidak akan berubah otomatis saat dicetak).</span>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="pos-card">
@@ -170,6 +287,8 @@ export const ReceiptForm: React.FC<ReceiptFormProps> = ({
                 placeholder="JAYA MART"
               />
             </div>
+
+            {renderManualDateField(false)}
 
             <div className="pos-form-group">
               <label>ID Merchant (Kode BRI)</label>
@@ -307,6 +426,8 @@ export const ReceiptForm: React.FC<ReceiptFormProps> = ({
                 />
               </div>
             )}
+
+            {renderManualDateField(true)}
 
             <div className="pos-form-group">
               <label id="lblNoMeter">{isPln ? (isBriPln ? 'IDPEL' : 'No Meter/IDPEL') : 'No Jastel'}</label>
@@ -461,29 +582,6 @@ export const ReceiptForm: React.FC<ReceiptFormProps> = ({
             </div>
           </>
         )}
-
-        {/* Tanggal Pembayaran */}
-        <div className="pos-form-group">
-          <label>Tanggal / Jam</label>
-          <span className="colon">:</span>
-          <div className="flex-1 flex gap-1.5">
-            <input
-              type="text"
-              id="tglBayar"
-              className="w-full"
-              value={data.tanggalWaktu}
-              onChange={(e) => onChange({ ...data, tanggalWaktu: e.target.value })}
-            />
-            <button
-              type="button"
-              onClick={handleSetCurrentTime}
-              title="Set ke Waktu Sekarang"
-              className="px-2.5 py-1 text-xs bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded cursor-pointer text-slate-700 whitespace-nowrap font-medium"
-            >
-              Sekarang
-            </button>
-          </div>
-        </div>
 
         {/* Opsi Tampilan (Bingkai Cetak, Pita Biru BRI / Stempel Jaya Mart) */}
         <div className="pt-2 border-t border-slate-200 text-xs text-slate-600 mb-4 space-y-2.5">
